@@ -12,17 +12,7 @@ resource "tls_private_key" "hashicat" {
 }
 
 locals {
-  private_key_filename = "hashicat-ssh-key.pem"
-}
-
-resource "null_resource" "create-ssh" {
-  provisioner "local-exec" {
-    command = "echo \"${tls_private_key.hashicat.private_key_pem}\" > ${local.private_key_filename}"
-  }
-
-  provisioner "local-exec" {
-    command = "chmod 600 ${local.private_key_filename}"
-  }
+  private_key_filename = "${var.prefix}-ssh-key.pem"
 }
 
 resource "aws_key_pair" "hashicat" {
