@@ -77,6 +77,24 @@ resource "aws_security_group" "hashicat" {
   }
 }
 
+data "aws_route53_zone" "main" {
+  name = "workshop.aws.hashidemos.io"
+}
+
+resource "random_id" "app-server-id" {
+  prefix = "${var.prefix}-hashicat-"
+  byte_length = 8
+}
+
+resource "aws_route53_record" "hashicat" {
+  zone_id = "${data.aws_route53_zone.main.zone_id}"
+  name    = "${random_id.app-server-id.hex}.workshop.aws.hashidemos.io"
+  type    = "A"
+  ttl     = "300"
+  records = ["${aws_eip.hashicat.public_ip}"]
+}
+
+
 resource "aws_eip" "hashicat" {
   instance = "${aws_instance.hashicat.id}"
   vpc      = true
