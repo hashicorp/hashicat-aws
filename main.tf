@@ -1,27 +1,5 @@
-terraform {
-  required_version = ">= 0.12.1"
-}
-
-provider "aws" {
-  version = "~> 2.0"
-  region  = var.region
-}
-
-resource tls_private_key "hashicat" {
-  algorithm = "RSA"
-}
-
-locals {
-  private_key_filename = "${var.prefix}-ssh-key.pem"
-}
-
-resource aws_key_pair "hashicat" {
-  key_name   = "${local.private_key_filename}"
-  public_key = "${tls_private_key.hashicat.public_key_openssh}"
-}
-
 resource aws_vpc "hashicat" {
-  cidr_block           = "${var.address_space}"
+  cidr_block           = var.address_space
   enable_dns_hostnames = false
 
   tags = {
@@ -30,7 +8,7 @@ resource aws_vpc "hashicat" {
 }
 
 resource aws_subnet "hashicat" {
-  vpc_id     = "${aws_vpc.hashicat.id}"
+  vpc_id     = aws_vpc.hashicat.id
   cidr_block = var.subnet_prefix
 
   tags = {
@@ -41,7 +19,7 @@ resource aws_subnet "hashicat" {
 resource aws_security_group "hashicat" {
   name = "${var.prefix}-security-group"
 
-  vpc_id = "${aws_vpc.hashicat.id}"
+  vpc_id = aws_vpc.hashicat.id
 
   ingress {
     from_port   = 22
@@ -84,7 +62,7 @@ resource random_id "app-server-id" {
 
 
 resource aws_eip "hashicat" {
-  instance = "${aws_instance.hashicat.id}"
+  instance = aws_instance.hashicat.id
   vpc      = true
 
   tags = {
@@ -93,7 +71,7 @@ resource aws_eip "hashicat" {
 }
 
 resource aws_internet_gateway "hashicat" {
-  vpc_id = "${aws_vpc.hashicat.id}"
+  vpc_id = aws_vpc.hashicat.id
 
   tags = {
     Name = "${var.prefix}-internet-gateway"
@@ -101,17 +79,17 @@ resource aws_internet_gateway "hashicat" {
 }
 
 resource aws_route_table "hashicat" {
-  vpc_id = "${aws_vpc.hashicat.id}"
+  vpc_id = aws_vpc.hashicat.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.hashicat.id}"
+    gateway_id = aws_internet_gateway.hashicat.id
   }
 }
 
 resource aws_route_table_association "hashicat" {
-  subnet_id      = "${aws_subnet.hashicat.id}"
-  route_table_id = "${aws_route_table.hashicat.id}"
+  subnet_id      = aws_subnet.hashicat.id
+  route_table_id = aws_route_table.hashicat.id
 }
 
 data aws_ami "ubuntu" {
@@ -134,10 +112,10 @@ data aws_ami "ubuntu" {
 resource aws_instance "hashicat" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
-  key_name                    = "${aws_key_pair.hashicat.key_name}"
+  key_name                    = aws_key_pair.hashicat.key_name
   associate_public_ip_address = true
-  subnet_id                   = "${aws_subnet.hashicat.id}"
-  vpc_security_group_ids      = ["${aws_security_group.hashicat.id}"]
+  subnet_id                   = aws_subnet.hashicat.id
+  vpc_security_group_ids      = [aws_security_group.hashicat.id]
 
   tags = {
     Name = "${var.prefix}-hashicat-instance"
@@ -168,7 +146,7 @@ resource "null_resource" "configure-cat-app" {
 
   # Terraform 0.12
   triggers = {
-    build_number = "${timestamp()}"
+    build_number = timestamp()
   }
   provisioner "file" {
     source      = "files/"
@@ -177,8 +155,8 @@ resource "null_resource" "configure-cat-app" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${tls_private_key.hashicat.private_key_pem}"
-      host        = "${aws_eip.hashicat.public_ip}"
+      private_key = tls_private_key.hashicat.private_key_pem
+      host        = aws_eip.hashicat.public_ip
     }
   }
   provisioner "remote-exec" {
@@ -193,8 +171,21 @@ resource "null_resource" "configure-cat-app" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${tls_private_key.hashicat.private_key_pem}"
-      host        = "${aws_eip.hashicat.public_ip}"
+      private_key = tls_private_key.hashicat.private_key_pem
+      host        = aws_eip.hashicat.public_ip
     }
   }
+}
+
+resource tls_private_key "hashicat" {
+  algorithm = "RSA"
+}
+
+locals {
+  private_key_filename = "${var.prefix}-ssh-key.pem"
+}
+
+resource aws_key_pair "hashicat" {
+  key_name   = local.private_key_filename
+  public_key = tls_private_key.hashicat.public_key_openssh
 }
