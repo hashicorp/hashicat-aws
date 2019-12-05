@@ -136,7 +136,7 @@ resource aws_instance "hashicat" {
 # Run the deploy_app.sh script.
 resource "null_resource" "configure-cat-app" {
   depends_on = [
-    "aws_instance.hashicat",
+    aws_instance.hashicat,
   ]
 
   # Terraform 0.11
