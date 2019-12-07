@@ -69,10 +69,6 @@ resource random_id "app-server-id" {
 resource aws_eip "hashicat" {
   instance = aws_instance.hashicat.id
   vpc      = true
-
-  tags = {
-    Name = "${var.prefix}-elastic-ip"
-  }
 }
 
 resource aws_internet_gateway "hashicat" {
