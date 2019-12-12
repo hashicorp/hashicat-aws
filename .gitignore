@@ -10,3 +10,7 @@
 
 # no creds
 *.pem
+
+# terraformrc file
+.terraformrc
+terraform.rc
