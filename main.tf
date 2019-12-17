@@ -65,12 +65,6 @@ resource random_id "app-server-id" {
   byte_length = 8
 }
 
-
-resource aws_eip "hashicat" {
-  instance = aws_instance.hashicat.id
-  vpc      = true
-}
-
 resource aws_internet_gateway "hashicat" {
   vpc_id = aws_vpc.hashicat.id
 
@@ -157,7 +151,7 @@ resource "null_resource" "configure-cat-app" {
       type        = "ssh"
       user        = "ubuntu"
       private_key = tls_private_key.hashicat.private_key_pem
-      host        = aws_eip.hashicat.public_ip
+      host        = aws_instance.hashicat.public_ip
     }
   }
   provisioner "remote-exec" {
@@ -175,7 +169,7 @@ resource "null_resource" "configure-cat-app" {
       type        = "ssh"
       user        = "ubuntu"
       private_key = tls_private_key.hashicat.private_key_pem
-      host        = aws_eip.hashicat.public_ip
+      host        = aws_instance.hashicat.public_ip
     }
   }
 }
