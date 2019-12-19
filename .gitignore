@@ -12,5 +12,5 @@
 *.pem
 
 # terraformrc file
-.terraformrc
 terraform.rc
+.terraformrc
