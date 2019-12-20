@@ -65,6 +65,12 @@ resource random_id "app-server-id" {
   byte_length = 8
 }
 
+
+resource aws_eip "hashicat" {
+  instance = aws_instance.hashicat.id
+  vpc      = true
+}
+
 resource aws_internet_gateway "hashicat" {
   vpc_id = aws_vpc.hashicat.id
 
@@ -92,8 +98,8 @@ data aws_ami "ubuntu" {
 
   filter {
     name   = "name"
-    #values = ["ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-*"]
-    values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-*"]
+    # values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
   }
 
   filter {
@@ -151,7 +157,7 @@ resource "null_resource" "configure-cat-app" {
       type        = "ssh"
       user        = "ubuntu"
       private_key = tls_private_key.hashicat.private_key_pem
-      host        = aws_instance.hashicat.public_ip
+      host        = aws_eip.hashicat.public_ip
     }
   }
   provisioner "remote-exec" {
@@ -163,13 +169,15 @@ resource "null_resource" "configure-cat-app" {
       "sudo chown -R ubuntu:ubuntu /var/www/html",
       "chmod +x *.sh",
       "PLACEHOLDER=${var.placeholder} WIDTH=${var.width} HEIGHT=${var.height} PREFIX=${var.prefix} ./deploy_app.sh",
+      "sudo apt -y install cowsay",
+      "cowsay Mooooooooooo!",
     ]
 
     connection {
       type        = "ssh"
       user        = "ubuntu"
       private_key = tls_private_key.hashicat.private_key_pem
-      host        = aws_instance.hashicat.public_ip
+      host        = aws_eip.hashicat.public_ip
     }
   }
 }
