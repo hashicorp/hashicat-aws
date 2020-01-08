@@ -1,6 +1,6 @@
 # hashicat-aws
-Terraform Apps for TFE workshops
+Hashicat: A terraform built application for use in Hashicorp workshops
 
-Includes "Meow World" website and Dockerfiles for building containerized apps.
+Includes "Meow World" website.
 
-Test change here.
+[![CircleCI](https://circleci.com/gh/hashicorp/hashicat-aws.svg?style=svg)](https://circleci.com/gh/hashicorp/hashicat-aws)
