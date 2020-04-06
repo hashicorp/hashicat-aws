@@ -57,14 +57,8 @@ resource aws_vpc "hashicat" {
 # }
 
 # resource random_id "app-server-id" {
-#   prefix = "${var.prefix}-hashicat-"
+#   prefix      = "${var.prefix}-hashicat-"
 #   byte_length = 8
-# }
-
-
-# resource aws_eip "hashicat" {
-#   instance = aws_instance.hashicat.id
-#   vpc      = true
 # }
 
 # resource aws_internet_gateway "hashicat" {
@@ -93,9 +87,9 @@ resource aws_vpc "hashicat" {
 #   most_recent = true
 
 #   filter {
-#     name   = "name"
-#     values = ["ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-*"]
-#     # values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+#     name = "name"
+#     #values = ["ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-*"]
+#     values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
 #   }
 
 #   filter {
@@ -104,6 +98,16 @@ resource aws_vpc "hashicat" {
 #   }
 
 #   owners = ["099720109477"] # Canonical
+# }
+
+# resource "aws_eip" "hashicat" {
+#   instance = aws_instance.hashicat.id
+#   vpc      = true
+# }
+
+# resource "aws_eip_association" "hashicat" {
+#   instance_id   = aws_instance.hashicat.id
+#   allocation_id = aws_eip.hashicat.id
 # }
 
 # resource aws_instance "hashicat" {
@@ -132,19 +136,12 @@ resource aws_vpc "hashicat" {
 # # Add execute permissions to our scripts.
 # # Run the deploy_app.sh script.
 # resource "null_resource" "configure-cat-app" {
-#   depends_on = [
-#     aws_instance.hashicat,
-#   ]
+#   depends_on = [aws_eip_association.hashicat]
 
-#   # Terraform 0.11
-#   # triggers {
-#   #   build_number = "${timestamp()}"
-#   # }
-
-#   # Terraform 0.12
 #   triggers = {
 #     build_number = timestamp()
 #   }
+
 #   provisioner "file" {
 #     source      = "files/"
 #     destination = "/home/ubuntu/"
@@ -156,6 +153,7 @@ resource aws_vpc "hashicat" {
 #       host        = aws_eip.hashicat.public_ip
 #     }
 #   }
+
 #   provisioner "remote-exec" {
 #     inline = [
 #       "sudo add-apt-repository universe",
