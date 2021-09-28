@@ -69,11 +69,6 @@ resource "aws_security_group" "hashicat" {
   }
 }
 
-resource "random_id" "app-server-id" {
-  prefix      = "${var.prefix}-hashicat-"
-  byte_length = 8
-}
-
 resource "aws_internet_gateway" "hashicat" {
   vpc_id = aws_vpc.hashicat.id
 
@@ -195,7 +190,7 @@ resource "tls_private_key" "hashicat" {
 }
 
 locals {
-  private_key_filename = "${random_id.app-server-id.dec}-ssh-key.pem"
+  private_key_filename = "${var.prefix}-ssh-key.pem"
 }
 
 resource "aws_key_pair" "hashicat" {
