@@ -3,4 +3,10 @@ module "s3-bucket" {
   version = "2.2.0"
   # insert required variables here
   # hendana
+  bucket = "my-s3-bucket"
+  acl    = "private"
+
+  versioning = {
+    enabled = true
+  }
 }
