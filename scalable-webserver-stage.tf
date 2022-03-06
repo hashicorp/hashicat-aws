@@ -8,6 +8,7 @@ module "scalable-web-server" {
   instance_type = var.instance_type
   min_size      = 2
   max_size      = 3
+  vpc_id = aws_vpc.hashicat.id
 }
 
 resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
