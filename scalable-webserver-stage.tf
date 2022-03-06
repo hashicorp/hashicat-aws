@@ -2,9 +2,9 @@ module "scalable-web-server" {
   source  = "app.terraform.io/telstra-yogita/scalable-web-server/aws"
   version = "1.0.0"
   # insert required variables here
-  cluster_name           = var.cluster_name
-  db_remote_state_bucket = var.db_remote_state_bucket_stage
-  db_remote_state_key    = var.db_remote_state_key_stage
+  cluster_name           = "yogitad_webserver_stage"
+  db_remote_state_bucket = "yogitad_webserver_bucket_stage"
+  db_remote_state_key    =  "webserver_stage"
   min_size      = 2
   max_size      = 3
 }
