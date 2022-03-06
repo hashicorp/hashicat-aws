@@ -199,10 +199,3 @@ resource "aws_key_pair" "hashicat" {
   key_name   = local.private_key_filename
   public_key = tls_private_key.hashicat.public_key_openssh
 }
-
-module "s3-bucket" {
-  source  = "app.terraform.io/telstra-yogita/s3-bucket/aws"
-  version = "2.8.0"
-  # insert required variables here
-  bucket_prefix = "yogitadesai"
-}
