@@ -5,6 +5,7 @@ module "scalable-web-server" {
   cluster_name           = "yogitad_webserver_stage"
   db_remote_state_bucket = "yogitad_webserver_bucket_stage"
   db_remote_state_key    =  "webserver_stage"
+  instance_type = var.instance_type
   min_size      = 2
   max_size      = 3
 }
