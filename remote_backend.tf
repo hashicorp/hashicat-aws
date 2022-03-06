@@ -7,7 +7,7 @@ terraform {
   #  }
   #}
   backend "s3" {
-    bucket         = "yogitad_bucket_webserver_stage"
+    bucket         = module.s3-bucket.s3_bucket_id
     key            = "webserverstage/terraform.tfstate"
     region         =  var.region
     # encrypt        = true
