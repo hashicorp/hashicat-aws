@@ -5,12 +5,6 @@ terraform {
       version = "=3.42.0"
     }
   }
-  backend "s3" {
-    bucket         = "yogitad_bucket__webserver_stage"
-    key            = "test/terraform.tfstate"
-    region         =  var.region
-    # encrypt        = true
-  }
 }
 
 provider "aws" {
