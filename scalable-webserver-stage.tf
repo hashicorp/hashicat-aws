@@ -1,9 +1,19 @@
+
+terraform {
+  backend "s3" {
+    bucket         = "yogitad_bucket__webserver_stage"
+    key            = "test/terraform.tfstate"
+    region         =  var.region
+    # encrypt        = true
+  }
+}
+
 module "scalable-web-server" {
   source  = "app.terraform.io/telstra-yogita/scalable-web-server/aws"
   version = "1.0.0"
   # insert required variables here
   cluster_name           = "yogitad_webserver_stage"
-  db_remote_state_bucket = "yogitad_webserver_bucket_stage"
+  db_remote_state_bucket = module.s3-bucket.s3_bucket_id
   db_remote_state_key    =  "webserver_stage"
   instance_type = var.instance_type
   min_size      = 2
