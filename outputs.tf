@@ -15,5 +15,5 @@ output "s3_bucket_id" {
 
 output "vpc_id" {
   value       = "${aws_vpc.hashicat.id}"
-  description = "The VPC ID""
+  description = "The VPC ID"
 }
