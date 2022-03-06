@@ -1,13 +1,3 @@
-
-terraform {
-  backend "s3" {
-    bucket         = "yogitad_bucket__webserver_stage"
-    key            = "test/terraform.tfstate"
-    region         =  var.region
-    # encrypt        = true
-  }
-}
-
 module "scalable-web-server" {
   source  = "app.terraform.io/telstra-yogita/scalable-web-server/aws"
   version = "1.0.0"
