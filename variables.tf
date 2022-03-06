@@ -48,3 +48,14 @@ variable "placeholder" {
   default     = "placekitten.com"
   description = "Image-as-a-service URL. Some other fun ones to try are fillmurray.com, placecage.com, placebeard.it, loremflickr.com, baconmockup.com, placeimg.com, placebear.com, placeskull.com, stevensegallery.com, placedog.net"
 }
+
+variable "db_remote_state_bucket" {
+  description = "The name of the S3 bucket used for the database's remote state storage"
+  type        = string
+}
+
+variable "db_remote_state_key" {
+  description = "The name of the key in the S3 bucket used for the database's remote state storage"
+  type        = string
+  default = webserverstage/terraform.tfstate""
+}
