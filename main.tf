@@ -11,7 +11,7 @@ provider "aws" {
   region  = var.region
 }
 
-resource "aws_vpcc" "hashicat" {
+resource "aws_vpc" "hashicat" {
   cidr_block           = var.address_space
   enable_dns_hostnames = true
 
