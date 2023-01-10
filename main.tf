@@ -1,3 +1,6 @@
+# Rename or copy this file to terraform.tfvars
+# Prefix must be all lowercase letters, digits, and hyphens.
+# Make sure it is at least 5 characters long.
 terraform {
   required_providers {
     aws = {
@@ -197,3 +200,5 @@ resource "aws_key_pair" "hashicat" {
   key_name   = local.private_key_filename
   public_key = tls_private_key.hashicat.public_key_openssh
 }
+
+
