@@ -11,6 +11,7 @@ cat << EOM > /var/www/html/index.html
   <!-- BEGIN -->
   <center><img src="http://${PLACEHOLDER}/${WIDTH}/${HEIGHT}"></img></center>
   <center><h2>Meow World!</h2></center>
+  <h1>'Cat'chy marketing slogan.</h1>
   Welcome to ${PREFIX}'s app. Replace this text with your own.
   <p>My own text...</p>
   <!-- END -->
