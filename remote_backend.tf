@@ -7,12 +7,12 @@ terraform {
     }
   }
 }
-terraform {
-  cloud {
-    organization = "Blackmosesco"
+#terraform {
+  #cloud {
+    #organization = "Blackmosesco"
 
-    workspaces {
-      name = "hashicat-aws"
+    #workspaces {
+     # name = "hashicat-aws"
     }
   }
 }
