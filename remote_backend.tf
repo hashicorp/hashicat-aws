@@ -13,7 +13,5 @@ terraform {
 
     #workspaces {
      # name = "hashicat-aws"
-    }
-  }
-}
+
 
