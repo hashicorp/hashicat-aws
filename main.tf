@@ -18,7 +18,7 @@ policy "enforce-mandatory-tags" {
 }
 
 module "tfplan-functions" {
-  source = "https://github.com/hashicorp/terraform-guides/blob/master/governance/third-generation/common-functions/tfplan-functions/tfplan-functions.sentinel"
+  source = "https://github.com/hashicorp/terraform-sentinel-policies/blob/main/common-functions/tfrun-functions/tfrun-functions.sentinel"
 }
 
 resource "aws_vpc" "hashicat" {
