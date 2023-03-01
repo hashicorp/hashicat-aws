@@ -9,7 +9,7 @@ import "tfrun-functions" as run
 import "decimal"
 
 # Monthly Limit
-limit = decimal.new(1000)
+limit = decimal.new(1)
 
 # Call the validation function
 # Warnings will be printed for violations
