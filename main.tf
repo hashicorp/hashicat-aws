@@ -13,13 +13,7 @@ provider "aws" {
 }
 
 
-policy "enforce-mandatory-tags" {
-    enforcement_level = "hard-mandatory"
-}
 
-module "tfplan-functions" {
-  source = "https://github.com/hashicorp/terraform-sentinel-policies/blob/main/common-functions/tfrun-functions/tfrun-functions.sentinel"
-}
 
 resource "aws_vpc" "hashicat" {
   cidr_block           = var.address_space
