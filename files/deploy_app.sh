@@ -10,8 +10,9 @@ cat << EOM > /var/www/html/index.html
 
   <!-- BEGIN -->
   <center><img src="http://${PLACEHOLDER}/${WIDTH}/${HEIGHT}"></img></center>
-  <center><h2>Meow World!</h2></center>
-  Welcome to ${PREFIX}'s app. Replace this text with your own.
+  <center><h2>Meow World!</h2>
+  Welcome to ${PREFIX}'s app. Replace this text with your own.<br>
+  2023/03/08 10:30<br></center>
   <!-- END -->
 
   </div>
