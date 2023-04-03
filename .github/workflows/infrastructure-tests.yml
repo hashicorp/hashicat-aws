@@ -1,11 +1,9 @@
 name: hashicorp/hashicat-aws/infrastructure-tests
 on:
+  workflow_dispatch: 
   push:
     branches:
-      - master
-env:
-  TF_VAR_prefix: xxxxxxx
-  TF_VAR_region: xxxxxxx
+      - 'master'
 jobs:
   terraform-validate:
     runs-on: ubuntu-latest
