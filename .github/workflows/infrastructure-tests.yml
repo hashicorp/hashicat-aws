@@ -1,9 +1,19 @@
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
 name: hashicorp/hashicat-aws/infrastructure-tests
-on: workflow_dispatch
+on:
+  workflow_dispatch: 
+  push:
+    branches:
+      - 'master'
 jobs:
-  this-is-so-stupid:
+  terraform-validate:
     runs-on: ubuntu-latest
+    container:
+      image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
-      - run: echo "this is so stupid"
+      - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
+      - name: Terraform Validate
+        run: |-
+          terraform init
+          terraform validate
+permissions:
+  contents: read

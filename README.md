@@ -3,5 +3,5 @@ Hashicat: A terraform built application for use in Hashicorp workshops
 
 Includes "Meow World" website.
 
-[![CircleCI](https://circleci.com/gh/hashicorp/hashicat-aws.svg?style=svg)](https://circleci.com/gh/hashicorp/hashicat-aws)
+[![infrastructure-tests](https://github.com/hashicorp/hashicat-aws/actions/workflows/infrastructure-tests.yml/badge.svg)[https://github.com/hashicorp/hashicat-aws/actions/workflows/infrastructure-tests.yml]
 
