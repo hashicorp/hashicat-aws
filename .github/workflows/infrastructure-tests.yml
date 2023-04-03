@@ -1,0 +1,19 @@
+name: hashicorp/hashicat-aws/infrastructure-tests
+on:
+  push:
+    branches:
+    - master
+env:
+  TF_VAR_prefix: xxxxxxx
+  TF_VAR_region: xxxxxxx
+jobs:
+  terraform-validate:
+    runs-on: ubuntu-latest
+    container:
+      image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+    - uses: actions/checkout@v3.5.0
+    - name: Terraform Validate
+      run: |-
+        terraform init
+        terraform validate
