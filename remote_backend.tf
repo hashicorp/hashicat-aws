@@ -4,5 +4,4 @@ terraform {
     organization = "ghm-training"
       name = "hashicat-aws"
     }
-  }
 }
