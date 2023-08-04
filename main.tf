@@ -16,7 +16,7 @@ resource "aws_vpc" "hashicat" {
   enable_dns_hostnames = true
 
   tags = {
-    name = "${var.prefix}-vpc-${var.region}-dev"
+    name = "${var.prefix}-vpc-${var.region}"
     environment = "Production"
   }
 }
