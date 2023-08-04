@@ -16,7 +16,7 @@ resource "aws_vpc" "hashicat" {
   enable_dns_hostnames = true
 
   tags = {
-    name = "${var.prefix}-vpc-${var.region}"
+    name = "${var.prefix}-vpc-${var.region}-staging"
     environment = "Production"
   }
 }
@@ -118,6 +118,7 @@ resource "aws_eip_association" "hashicat" {
   allocation_id = aws_eip.hashicat.id
 }
 
+
 resource "aws_instance" "hashicat" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
@@ -127,7 +128,7 @@ resource "aws_instance" "hashicat" {
   vpc_security_group_ids      = [aws_security_group.hashicat.id]
 
   tags = {
-    Name = "${var.prefix}-hashicat-instance"
+    Name = "${var.prefix}-hashicat-instance-dev"
   }
 }
 
@@ -196,4 +197,21 @@ locals {
 resource "aws_key_pair" "hashicat" {
   key_name   = local.private_key_filename
   public_key = tls_private_key.hashicat.public_key_openssh
+}
+
+
+# data sources
+data "aws_caller_identity" "inuse" {}
+
+# outputs
+output "account_id" {
+  value = data.aws_caller_identity.inuse.account_id
+}
+
+output "caller_arn" {
+  value = data.aws_caller_identity.inuse.arn
+}
+
+output "caller_user" {
+  value = data.aws_caller_identity.inuse.user_id
 }
