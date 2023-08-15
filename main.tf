@@ -127,9 +127,9 @@ resource "aws_instance" "hashicat" {
   vpc_security_group_ids      = [aws_security_group.hashicat.id]
 
   tags = {
-    Name        = "${var.prefix}-hashicat-instance"
-    Departement = "devops"
-    Billable    = "true"
+    Name       = "${var.prefix}-hashicat-instance"
+    Department = "devops"
+    Billable   = "true"
   }
 }
 
