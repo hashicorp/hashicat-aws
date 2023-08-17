@@ -3,7 +3,7 @@ module "s3_bucket" {
 
   bucket = "my-s3-bucket-kurio"
   acl    = "private"
-  bucket_prefix = "${prefix}"
+  #bucket_prefix = "${prefix}"
 
   control_object_ownership = true
   object_ownership         = "ObjectWriter"
