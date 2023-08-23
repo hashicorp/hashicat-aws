@@ -10,8 +10,8 @@ cat << EOM > /var/www/html/index.html
 
   <!-- BEGIN -->
   <center><img src="http://${PLACEHOLDER}/${WIDTH}/${HEIGHT}"></img></center>
-  <center><h2>Meow World!</h2></center>
-  Welcome to ${PREFIX}'s app. My first application using terraform. Now I need to understand how it works haha
+  <center><h2>Terraform ISV</h2></center>
+  Welcome to ${PREFIX}'s app. Integration with github done!
   <!-- END -->
 
   </div>
