@@ -1,0 +1,7 @@
+Terraform Cloud
+
+https://app.terraform.io/app/settings/tokens
+You need to add your Terraform cloud API token to a file called "credentials.tfrc.json". Select the "Credentials File" tab and open the /root/.terraform.d/credentials.tfrc.json file directly.
+/root/.terraform.d/credentials.tfrc.json
+
+
