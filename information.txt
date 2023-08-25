@@ -5,3 +5,11 @@ You need to add your Terraform cloud API token to a file called "credentials.tfr
 /root/.terraform.d/credentials.tfrc.json
 
 
+
+if you want to run through CLI using cicd
+root@workstation:~/hashicat-aws/json# export TOKEN=$(grep token /root/.terraform.d/credentials.tfrc.json | cut -d '"' -f4)
+root@workstation:~/hashicat-aws/json# export ORG="AccrediationLab"
+root@workstation:~/hashicat-aws/json# curl -s --header "Authorization: Bearer $TOKEN" --header "Content-Type: application/vnd.api+json"   https://app.terraform.io/api/v2/organizations/$ORG/workspaces/hashicat-aws | jq -r .data.id
+ws-sb81zFbmaDvZXgTu
+
+
