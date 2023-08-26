@@ -39,4 +39,25 @@ curl \
 ====
 
 
+to build custom tfe agent 
+Dockerfile
+=====================
+FROM hashicorp/tfc-agent:latest
 
+# Switch the to root user in order to perform privileged actions such as
+# installing software.
+USER root
+
+# Install our utils, including cowsay
+RUN apt-get update
+RUN apt-get install -y sudo unzip cowsay
+
+# Switch back to the tfc-agent user as needed by Terraform agents.
+USER tfc-agent
+---------------------------------------
+docker build .
+docker tag <copied_id> tfe/custom-image
+You can find the the Dashboard URL at the top of the Shell tab.
+
+Scroll down to where it says TFE agent image and paste your image tag.
+tfe/custom-image
