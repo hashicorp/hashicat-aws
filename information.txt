@@ -1,0 +1,84 @@
+Terraform Cloud
+
+https://app.terraform.io/app/settings/tokens
+You need to add your Terraform cloud API token to a file called "credentials.tfrc.json". Select the "Credentials File" tab and open the /root/.terraform.d/credentials.tfrc.json file directly.
+/root/.terraform.d/credentials.tfrc.json
+
+
+
+If you want to run through CLI using cicd (Check Master Branch)
+root@workstation:~/hashicat-aws/json# export TOKEN=$(grep token /root/.terraform.d/credentials.tfrc.json | cut -d '"' -f4)
+root@workstation:~/hashicat-aws/json# export ORG="AccrediationLab"
+root@workstation:~/hashicat-aws/json# curl -s --header "Authorization: Bearer $TOKEN" --header "Content-Type: application/vnd.api+json"   https://app.terraform.io/api/v2/organizations/$ORG/workspaces/hashicat-aws | jq -r .data.id
+ws-sb81zFbmaDvZXgTu
+
+
+
+For workspace variables
+-----------------------
+https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspace-variables#sample-request
+====
+curl \
+  --header "Authorization: Bearer $TOKEN" \
+  --header "Content-Type: application/vnd.api+json" \
+  --request POST \
+  --data @var-placeholder.json \
+  https://app.terraform.io/api/v2/workspaces/ws-sb81zFbmaDvZXgTu/vars
+====
+
+To apply runs
+-------------------
+https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#sample-request
+====
+curl \
+  --header "Authorization: Bearer $TOKEN" \
+  --header "Content-Type: application/vnd.api+json" \
+  --request POST \
+  --data @apply.json \
+  https://app.terraform.io/api/v2/runs
+====
+
+
+to build custom tfe agent 
+Dockerfile
+=====================
+FROM hashicorp/tfc-agent:latest
+
+# Switch the to root user in order to perform privileged actions such as
+# installing software.
+USER root
+
+# Install our utils, including cowsay
+RUN apt-get update
+RUN apt-get install -y sudo unzip cowsay
+
+# Switch back to the tfc-agent user as needed by Terraform agents.
+USER tfc-agent
+---------------------------------------
+docker build .
+docker tag <copied_id> tfe/custom-image
+You can find the the Dashboard URL at the top of the Shell tab.
+
+Scroll down to where it says TFE agent image and paste your image tag.
+tfe/custom-image
+
+
+
+#TFE Example 
+resource "null_resource" "cowsay-something" {
+  provisioner "local-exec" {
+    command = "/usr/games/cowsay 'Moo World'"
+  }
+}
+
+# Don't forget to change the values below! You can also copy this
+# from the workspace config page
+terraform {
+  backend "remote" {
+    hostname = "YOURANIMAL.tfe.training.hashidemos.io"
+    organization = "YOURORGANIZATION"
+    workspaces {
+      name = "YOURWORKSPACE"
+    }
+  }
+}
