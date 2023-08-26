@@ -61,3 +61,24 @@ You can find the the Dashboard URL at the top of the Shell tab.
 
 Scroll down to where it says TFE agent image and paste your image tag.
 tfe/custom-image
+
+
+
+#TFE Example 
+resource "null_resource" "cowsay-something" {
+  provisioner "local-exec" {
+    command = "/usr/games/cowsay 'Moo World'"
+  }
+}
+
+# Don't forget to change the values below! You can also copy this
+# from the workspace config page
+terraform {
+  backend "remote" {
+    hostname = "YOURANIMAL.tfe.training.hashidemos.io"
+    organization = "YOURORGANIZATION"
+    workspaces {
+      name = "YOURWORKSPACE"
+    }
+  }
+}
