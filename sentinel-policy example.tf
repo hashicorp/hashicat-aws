@@ -1,3 +1,4 @@
+save it as file.sentinel
 #Store it in workspac/sentinel
 
 # A sentinel policy for S3 buckets that enforces required tags are provided
