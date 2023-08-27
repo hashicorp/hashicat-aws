@@ -1,5 +1,5 @@
 # hashicat-aws
-Hashicat Bonus: A terraform built application for use in Hashicorp workshops
+Hashicat Bonus-Lab: A terraform built application for use in Hashicorp workshops
 
 Includes "Meow World" website.
 
