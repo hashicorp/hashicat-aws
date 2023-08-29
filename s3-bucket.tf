@@ -11,4 +11,8 @@ module "s3_bucket" {
   versioning = {
     enabled = true
   }
+  tags = {
+   Department = "test"
+   Billable = "no"
+  }
 }
