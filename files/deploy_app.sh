@@ -10,8 +10,8 @@ cat << EOM > /var/www/html/index.html
 
   <!-- BEGIN -->
   <center><img src="http://${PLACEHOLDER}/${WIDTH}/${HEIGHT}"></img></center>
-  <center><h2>Meow World!</h2></center>
-  Welcome to TheModel44 app. Replace this text with your own.
+  <center><h2>Meow the cat World!</h2></center>
+  Welcome to TheModel101 app. Replace this text with your own.
   <!-- END -->
 
   </div>
