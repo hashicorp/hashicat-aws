@@ -14,3 +14,4 @@
 # terraformrc file
 terraform.rc
 .terraformrc
+terraform.out
