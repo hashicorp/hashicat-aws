@@ -124,7 +124,11 @@ resource "aws_instance" "hashicat" {
   key_name                    = aws_key_pair.hashicat.key_name
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.hashicat.id
+<<<<<<< HEAD
   vpc_security_group_ids      = [aws_security_group.hashicat.id]
+=======
+  vpc_security_group_ids      = [aws_security_group.hashicat.id] 
+>>>>>>> 9f877a4fc46543ba3c881ba203ae34c15ef26660
 
   tags = {
     Name = "${var.prefix}-hashicat-instance"
