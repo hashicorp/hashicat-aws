@@ -86,6 +86,19 @@ resource "aws_route_table" "hashicat" {
   }
 }
 
+data "hcp_packer_iteration" "hashicat" {
+  bucket_name = "hashicat-aws"
+  channel     = "latest"  
+}
+
+data "hcp_packer_image" "hashicat-aws" {
+  bucket_name    = "hashicat-aws"
+  cloud_provider = "aws"
+  iteration_id   = data.hcp_packer_iteration.hashicat.id
+  region         = "us-east-1"
+}
+
+
 resource "aws_route_table_association" "hashicat" {
   subnet_id      = aws_subnet.hashicat.id
   route_table_id = aws_route_table.hashicat.id
@@ -119,15 +132,15 @@ resource "aws_eip_association" "hashicat" {
 }
 
 resource "aws_instance" "hashicat" {
-  ami                         = data.aws_ami.ubuntu.id
+  ami                         = data.hcp_packer_image.hashicat-aws.cloud_image_id
   instance_type               = var.instance_type
-  key_name                    = aws_key_pair.hashicat.key_name
+  //key_name                    = aws_key_pair.hashicat.key_name
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.hashicat.id
   vpc_security_group_ids      = [aws_security_group.hashicat.id]
-
-  tags = {
+tags = {
     Name = "${var.prefix}-hashicat-instance"
+  
   }
 }
 
@@ -143,57 +156,16 @@ resource "aws_instance" "hashicat" {
 # Set up some environment variables for our script.
 # Add execute permissions to our scripts.
 # Run the deploy_app.sh script.
-resource "null_resource" "configure-cat-app" {
-  depends_on = [aws_eip_association.hashicat]
-
-  triggers = {
-    build_number = timestamp()
-  }
-
-  provisioner "file" {
-    source      = "files/"
-    destination = "/home/ubuntu/"
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = tls_private_key.hashicat.private_key_pem
-      host        = aws_eip.hashicat.public_ip
+check "ami_version_check" {
+  data "aws_instance" "hashicat_current" {
+    instance_tags = {
+      Name = "${var.prefix}-hashicat-instance"
     }
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt -y update",
-      "sleep 15",
-      "sudo apt -y update",
-      "sudo apt -y install apache2",
-      "sudo systemctl start apache2",
-      "sudo chown -R ubuntu:ubuntu /var/www/html",
-      "chmod +x *.sh",
-      "PLACEHOLDER=${var.placeholder} WIDTH=${var.width} HEIGHT=${var.height} PREFIX=${var.prefix} ./deploy_app.sh",
-      "sudo apt -y install cowsay",
-      "cowsay Mooooooooooo!",
-    ]
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = tls_private_key.hashicat.private_key_pem
-      host        = aws_eip.hashicat.public_ip
-    }
+  assert {
+    condition = aws_instance.hashicat.ami == data.hcp_packer_image.hashicat-aws.cloud_image_id
+    error_message = "Must use the latest available AMI, ${data.hcp_packer_image.hashicat-aws.cloud_image_id}."
   }
 }
 
-resource "tls_private_key" "hashicat" {
-  algorithm = "ED25519"
-}
-
-locals {
-  private_key_filename = "${var.prefix}-ssh-key.pem"
-}
-
-resource "aws_key_pair" "hashicat" {
-  key_name   = local.private_key_filename
-  public_key = tls_private_key.hashicat.public_key_openssh
-}
