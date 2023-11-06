@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "=3.42.0"
+      version = "~> 5.0"
     }
   }
 }
@@ -96,7 +96,6 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name = "name"
-    #values = ["ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-*"]
     values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
 
@@ -110,7 +109,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_eip" "hashicat" {
   instance = aws_instance.hashicat.id
-  vpc      = true
+  domain   = "vpc"
 }
 
 resource "aws_eip_association" "hashicat" {
@@ -143,12 +142,12 @@ resource "aws_instance" "hashicat" {
 # Set up some environment variables for our script.
 # Add execute permissions to our scripts.
 # Run the deploy_app.sh script.
-resource "null_resource" "configure-cat-app" {
+resource "terraform_data" "configure-cat-app" {
   depends_on = [aws_eip_association.hashicat]
 
-  triggers = {
-    build_number = timestamp()
-  }
+  triggers_replace = [
+    timestamp()
+  ]
 
   provisioner "file" {
     source      = "files/"
