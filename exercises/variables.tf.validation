@@ -12,6 +12,11 @@ variable "prefix" {
 variable "region" {
   description = "The region where the resources are created."
   default     = "us-east-1"
+
+  validation {
+    condition     = contains(["us-east-1", "us-west-1", "eu-west-2", "p-southeast-1"], var.region)
+    error_message = "region 변수는 us-east-1, us-west-1, eu-west-2, p-southeast-1 중 하나여야 합니다."
+  }
 }
 
 variable "address_space" {
