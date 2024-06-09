@@ -1,1 +1,1 @@
-placeholder = "placekitten.com"
+placeholder = "placebear.com"
