@@ -1,1 +1,1 @@
-placeholder = "placebear.com"
+placeholder = "picsum.photos"
