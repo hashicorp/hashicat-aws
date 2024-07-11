@@ -11,6 +11,16 @@ provider "aws" {
   region  = var.region
 }
 
+# Setup the VPC from a module
+module "vpc" {
+  source = "app.terraform.io/sreeprem-org/vpc/aws"
+  version = "0.0.1"
+
+  env = "dev"
+  public_subnet_cidr_blocks = ["10.0.200.0/24", "10.0.201.0/24"]
+  vpc_cidr_block = "10.1.200.0/24"
+}
+
 resource "aws_vpc" "hashicat" {
   cidr_block           = var.address_space
   enable_dns_hostnames = true
