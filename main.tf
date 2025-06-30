@@ -1,3 +1,5 @@
+#This is Dev branch
+#Added by user1
 terraform {
   required_providers {
     aws = {
@@ -128,6 +130,8 @@ resource "aws_instance" "hashicat" {
 
   tags = {
     Name = "${var.prefix}-hashicat-instance"
+    Department = "devopsss"
+    Billable = "true"
   }
 }
 
