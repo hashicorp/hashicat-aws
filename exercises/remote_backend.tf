@@ -1,3 +1,5 @@
+# Copyright IBM Corp. 2019, 2026
+
 # If you are in a workshop...
 # Do not delete this file!
 # It's required to complete the Instruqt labs.
