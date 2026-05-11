@@ -1,3 +1,5 @@
+# Copyright IBM Corp. 2019, 2026
+
 # Outputs file
 output "catapp_url" {
   value = "http://${aws_eip.hashicat.public_dns}"

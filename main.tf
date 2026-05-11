@@ -1,3 +1,5 @@
+# Copyright IBM Corp. 2019, 2026
+
 terraform {
   required_providers {
     aws = {

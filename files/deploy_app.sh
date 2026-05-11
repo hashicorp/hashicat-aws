@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright IBM Corp. 2019, 2026
+
 # Script to deploy a very simple web application.
 # The web app has a customizable image and some text.
 
